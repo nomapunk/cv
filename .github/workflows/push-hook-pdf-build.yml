@@ -1,0 +1,43 @@
+on: [push]
+jobs:
+  BuildPDF:
+    runs-on: ubuntu-20.04
+    name: Build PDF from .tex
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Build PDF builder
+        run: docker build -t pdfbuilder .
+      - name: Build PDF
+        run: docker run --mount src=`pwd`/cv,target=/cv,type=bind pdfbuilder
+      - uses: actions/upload-artifact@v2
+        with:
+          name: resume
+          path: cv/resume.pdf
+          retention-days: 1
+
+  PublishPDF:
+    needs: BuildPDF
+    runs-on: ubuntu-20.04
+    name: Publish PDF to Github Pages
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Prepare to upload
+        run: |
+          git config user.name 'Dmitry Stasenko'
+          git config user.email 'hattonuri@users.noreply.github.com'
+          git fetch origin
+          git checkout to_show_in_pages
+          git pull
+      - name: Remove existing resume
+        run: rm resume.pdf
+      - name: Download resume from builder
+        uses: actions/download-artifact@v2
+        with:
+          name: resume
+      - name: Push resume to Pages
+        run: |
+          git add resume.pdf
+          git commit -m "Push cv from CI"
+          git push --set-upstream origin to_show_in_pages
