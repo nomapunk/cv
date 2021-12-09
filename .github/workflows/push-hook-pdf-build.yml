@@ -23,13 +23,12 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+        with:
+          ref: to_show_in_pages
       - name: Prepare to upload
         run: |
           git config user.name 'Dmitry Stasenko'
           git config user.email 'hattonuri@users.noreply.github.com'
-          git fetch origin
-          git checkout to_show_in_pages
-          git pull
       - name: Remove existing resume
         run: rm resume.pdf
       - name: Download resume from builder
