@@ -1,1 +1,1 @@
-https://hattonuri.github.io/cv/resume.pdf
+https://nomapunk.github.io/cv/resume.pdf
