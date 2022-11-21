@@ -25,12 +25,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: main
-      - name: Prepare to upload
-        run: |
-          git config user.name 'Aleksander Draganov'
-          git config user.email 'nomapunk@users.noreply.github.com'
-      - name: Remove existing resume
-        run: rm resume.pdf
       - name: Download resume from builder
         uses: actions/download-artifact@v2
         with:
@@ -39,4 +33,4 @@ jobs:
         run: |
           git add resume.pdf
           git commit -m "Push cv from CI"
-          git push --set-upstream origin to_show_in_pages
+          git push --force
