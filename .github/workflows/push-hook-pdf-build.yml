@@ -17,20 +17,16 @@ jobs:
           retention-days: 1
 
   PublishPDF:
-    needs: BuildPDF
-    runs-on: ubuntu-20.04
-    name: Publish PDF to Github Pages
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-        with:
-          path: main
-      - name: Download resume from builder
-        uses: actions/download-artifact@v2
-        with:
-          name: resume
-      - name: Push resume to Pages
+      - uses: actions/checkout@v1
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Commit report
         run: |
-          git add resume.pdf
-          git commit -m "Push cv from CI"
-          git push --force
+          git config --global user.name 'Aleksandr Draganov'
+          git config --global user.email 'nomapunk@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git checkout "${GITHUB_REF:11}"
+          git commit -am "Automated report"
+          git push
