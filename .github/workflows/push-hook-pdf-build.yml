@@ -27,8 +27,8 @@ jobs:
           ref: to_show_in_pages
       - name: Prepare to upload
         run: |
-          git config user.name 'Dmitry Stasenko'
-          git config user.email 'hattonuri@users.noreply.github.com'
+          git config user.name 'Aleksander Draganov'
+          git config user.email 'nomapunk@users.noreply.github.com'
       - name: Remove existing resume
         run: rm resume.pdf
       - name: Download resume from builder
