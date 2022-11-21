@@ -20,14 +20,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Create report file
-        run: date +%s > report.txt
+      - name: Download resume from builder
+        uses: actions/download-artifact@v2
+        with:
+          name: resume
       - name: Commit report
         run: |
           git config --global user.name 'Aleksandr Draganov'
           git config --global user.email 'nomapunk@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git checkout "${GITHUB_REF:11}"
-          git add report.txt
-          git commit -m "Automated report"
+          git add resume.pdf
+          git commit -m "CI resume"
           git push
