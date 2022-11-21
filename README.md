@@ -1,1 +1,1 @@
-https://nomapunk.github.io/cv/resume.pdf
+Look resume.pdf
